@@ -1,0 +1,46 @@
+- hosts: all
+  become: true
+
+  tasks:
+    - name: Install httpd
+      command: yum install httpd -y
+      become: yes
+      become_method: sudo
+      become_user: root
+
+    - name: Start httpd
+      command: systemctl start httpd
+      become: yes
+      become_method: sudo
+      become_user: root
+
+    - name: Enable httpd
+      command: systemctl enable httpd
+      become: yes
+      become_method: sudo
+      become_user: root
+
+    - name: Install git
+      command: yum install git -y
+      become: yes
+      become_method: sudo
+      become_user: root
+
+    - name: Create a new primary partition with a size of 1GiB
+      parted:
+        device: /dev/xvdc
+        number: 1
+        state: present
+        part_end: 500MiB
+
+    - name: Format the partition, mount it to the /var/www/html
+      shell: |
+        mkfs -t ext4 /dev/xvdc1
+        mount /dev/xvdc1 /var/www/html
+    - name: Copy the code from github to the /var/www/html
+      shell: |
+        cd /var/www/html
+        git clone https://github.com/cankush625/Web.git
+
+
+
