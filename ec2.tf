@@ -1,14 +1,28 @@
 resource "aws_instance" "ofekec2" {
     ami = "ami-0d593311db5abb72b"
     instance_type = "t2.micro"
-    key_name = "vockey"
+    key_name = aws_key_pair.infr_exr_key.key_name
     vpc_security_group_ids = ["${aws_security_group.ofeksg.id}"]
     subnet_id = "${aws_subnet.ofeksub1.id}"
     tags = {
         Name = "Ofek-Terra"
     }
 }
+//Creating private key
+resource "tls_private_key" "tlskey" {
+  algorithm = "RSA"
+  rsa_bits = 4096
+}
 
+resource "aws_key_pair" "infr_exr_key" {
+  
+  key_name = "mykey"
+  public_key = tls_private_key.tlskey.public_key_openssh
+  
+  provisioner "local-exec" {
+    command = "echo '${tls_private_key.tlskey.private_key_pem}' > ~/.ssh/${aws_key_pair.infr_exr_key.key_name}.pem"
+  }
+}
 
 
 
