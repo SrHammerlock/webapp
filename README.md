@@ -14,13 +14,25 @@ Prerequisites:
 - AWS CLI
 
 Installation:
-1. Pull my repository.
+1. Clone my repository :
+- git clone https://github.com/SrHammerlock/webapp.git
+
 2. Configure your aws environment.
-3. Change the AZs inside the vpc.tf file
+- aws configure ( input your access key , secret key and region)
+- copy the credentials into "~/.aws/credentials"
+3. Change the subnet AZs inside the vpc.tf file to your AZs
 4. Deploy with Terraform.
+- Terraform init
+- Terraform plan
+- Terraform apply
 
 Validation:
-- Open a browser tab and insert : <EC2-instance-public-ip>/Web/index.html
+- Open a browser tab and insert : Your-EC2-instance-public-ip/Web/index.html
 
 Credits:
 Ankush Chavan, I learned alot from his deployment .
+
+References:
+- Terraform installation: https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli
+- Ansible installation: https://docs.ansible.com/ansible/2.3/intro_installation.html#installation
+- AWS CLI installation: https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
