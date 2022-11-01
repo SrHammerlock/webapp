@@ -1,7 +1,3 @@
-variable "key_name" {
-  default = "labsuser.pem"
-}
-
 resource "aws_ebs_volume" "ofekebs" {
   availability_zone = "${aws_subnet.ofeksub1.availability_zone}"
   size              = 1
@@ -29,6 +25,6 @@ aws_volume_attachment.ebsattach,
 //
 
 provisioner "local-exec" {
-command = "sleep 120; ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ec2-user --private-key ~/Desktop/labsuser.pem -i '${aws_instance.ofekec2.public_ip},' master.yml"
+command = "sleep 120; ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ec2-user --private-key ~/.ssh/${aws_key_pair.infr_exr_key.key_name}.pem -i '${aws_instance.ofekec2.public_ip},' master.yml"
 }
 }
